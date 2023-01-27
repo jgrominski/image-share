@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  br
+
+  each img in image_list
+    p 
+      img(src=img.link alt='image' style='height:35vh;')
+    h3
+      a(href=img.user.url) #{img.user.username}
+    hr
+
+  else
+    p There are no public images on this website.

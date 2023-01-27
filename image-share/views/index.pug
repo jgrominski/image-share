@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #[em Image Share], a basic website for sharing images between users.
+
+  if error
+    p Error getting dynamic content.
+  else
+    h3 Website's stats:
+
+    ul
+      li #[strong Users:] !{data.users_count}
+      li #[strong Total Images:] !{data.images_count}
+      li #[strong Public Images:] !{data.public_images_count}
