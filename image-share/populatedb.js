@@ -38,11 +38,15 @@ function userCreate(username, password, email, cb) {
     });
 }
 
-function imageCreate(user, link, visibility, cb) {
+function imageCreate(user, link, description, date, visibility, cb) {
     imagedetail = {
         user: user,
         link: link
     };
+    if (description != false)
+        imagedetail.description = description;
+    if (date != false)
+        imagedetail.date = date;
     if (visibility != false)
         imagedetail.visibility = visibility;
 
@@ -78,22 +82,22 @@ function createUsers(cb) {
 function createImages(cb) {
     async.parallel([
         function (callback) {
-            imageCreate(users[0], '/images/7japmqnw4a.jpg', 'Private', callback);
+            imageCreate(users[0], '/images/7japmqnw4a.jpg', 'Les Demoiselles d\'Avignon', '1907-07-23', 'Private', callback);
         },
         function (callback) {
-            imageCreate(users[0], '/images/t8ofpcrfna.jpg', 'Public', callback);
+            imageCreate(users[0], '/images/t8ofpcrfna.jpg', 'Figures at the Seaside', '1931-03-21', 'Public', callback);
         },
         function (callback) {
-            imageCreate(users[1], '/images/3h1f4rv89u.jpg', 'Private', callback);
+            imageCreate(users[1], '/images/3h1f4rv89u.jpg', 'Black in Deep Red', '1957-05-30', 'Private', callback);
         },
         function (callback) {
-            imageCreate(users[1], '/images/vpyqrbbvyaj.jpg', 'Public', callback);
+            imageCreate(users[1], '/images/vpyqrbbvyaj.jpg', 'Number 14', '1960-10-03', 'Public', callback);
         },
         function (callback) {
-            imageCreate(users[2], '/images/x2hbccbl8.jpg', 'Public', callback);
+            imageCreate(users[2], '/images/x2hbccbl8.jpg', 'The Potato Eaters', '1885-04-13', 'Public', callback);
         },
         function (callback) {
-            imageCreate(users[2], '/images/i3ac8vcgxeg.jpg', 'Public', callback);
+            imageCreate(users[2], '/images/i3ac8vcgxeg.jpg', 'The Starry Night', '1889-06-14', 'Public', callback);
         }
     ],
         cb);

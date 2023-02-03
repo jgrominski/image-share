@@ -3,47 +3,23 @@ const Image = require("../models/image");
 
 const async = require("async");
 
-exports.index = (req, res) => {
-    async.parallel(
-        {
-            users_count(callback) {
-                User.countDocuments({}, callback);
-            },
-            images_count(callback) {
-                Image.countDocuments({}, callback);
-            },
-            public_images_count(callback) {
-                Image.countDocuments({ visibility: "Public" }, callback);
-            }
-        },
-        (err, results) => {
-            res.render("index", {
-                title: "Image Share Home",
-                error: err,
-                data: results,
-            });
-        }
-    );
-};
+// Display detail page for a specific User.
+exports.user_detail = async (req, res, next) => {
+    const user = await User.findOne({ username: req.params.username });
 
-// Display list of all Users.
-exports.user_list = (req, res, next) => {
-    User.find()
-        .sort([["username", "ascending"]])
-        .exec(function (err, list_users) {
+    Image.find({ visibility: 'Public', user: user._id})
+        .populate("user")
+        .sort({ date: -1 })
+        .exec(function (err, list_public_images) {
             if (err) {
                 return next(err);
             }
-            res.render("user_list", {
-                title: "User List",
-                user_list: list_users
+            res.render("image_list", {
+                title: "@" + req.params.username,
+                header: "@" + req.params.username,
+                image_list: list_public_images
             });
         });
-};
-
-// Display detail page for a specific User.
-exports.user_detail = (req, res) => {
-    res.send(`NOT IMPLEMENTED: User detail: ${req.params.username}`);
 };
 
 // Display User create form on GET.

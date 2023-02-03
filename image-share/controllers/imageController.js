@@ -2,22 +2,36 @@ const Image = require("../models/image");
 
 // Display list of all Images.
 exports.image_list = (req, res, next) => {
-    Image.find({visibility: 'Public'})
-    .populate("user")
-    .exec(function (err, list_public_images) {
-        if (err) {
-            return next(err);
-        }
-        res.render("image_list", {
-            title: "All Images",
-            image_list: list_public_images
+    Image.find({ visibility: 'Public' })
+        .populate("user")
+        .sort({ date: -1 })
+        .exec(function (err, list_public_images) {
+            if (err) {
+                return next(err);
+            }
+            res.render("image_list", {
+                title: "Image Share Home",
+                header: "Image Share",
+                image_list: list_public_images
+            });
         });
-    });
 };
 
 // Display detail page for a specific Image.
 exports.image_detail = (req, res) => {
-    res.send(`NOT IMPLEMENTED: Image detail: ${req.params.id}`);
+    Image.find({ _id: req.params.id })
+        .populate("user")
+        .sort({ date: -1 })
+        .exec(function (err, list_public_images) {
+            if (err) {
+                return next(err);
+            }
+            res.render("image_list", {
+                title: "Image Details",
+                header: "Image Details",
+                image_list: list_public_images
+            });
+        });
 };
 
 // Display Image create form on GET.
